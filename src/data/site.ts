@@ -7,7 +7,7 @@ export const site = {
   whatsappDisplay: "08186124468",
   whatsappUrl: "https://wa.me/2348186124468",
   address: null as string | null, // [Clinic address — to be confirmed by TMC]
-  credit: "© 2026 Ashi Limited",
+  credit: "© 2026 Devashy Limited",
   tagline: "Accessible. Affordable. Reliable.",
 };
 

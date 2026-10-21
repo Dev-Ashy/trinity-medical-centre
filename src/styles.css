@@ -95,11 +95,15 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4 {
     font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
   :focus-visible {
@@ -132,4 +136,27 @@
   .text-balance-tight {
     text-wrap: balance;
   }
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: reveal 0.7s ease-out forwards;
+  }
+  .reveal.delay-1 { animation-delay: 0.1s; }
+  .reveal.delay-2 { animation-delay: 0.2s; }
+  .reveal.delay-3 { animation-delay: 0.3s; }
+}
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideshow {
+  0% { opacity: 0; }
+  10% { opacity: 0.8; }
+  30% { opacity: 0.8; }
+  40% { opacity: 0; }
+  100% { opacity: 0; }
 }

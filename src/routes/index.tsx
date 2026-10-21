@@ -15,16 +15,36 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const heroImages = [
+    "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2400&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1586776803735-452c5f1c5d7d?q=80&w=2400&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2400&auto=format&fit=crop",
+  ];
+
   return (
     <div>
-      <PageHero
-        title="Accessible. Affordable. Reliable Healthcare"
-        subtitle="Trinity Medical Centre has served our community since 17 August 2023 with compassionate, gold-standard care."
-        ctaPrimary={{ label: "Book an Appointment", to: "/book-appointment" }}
-        ctaSecondary={{ label: "Our Services", to: "/services" }}
-        image={tmcPhotos.entrance}
-        imageAlt="Trinity Medical Centre entrance"
-      />
+      <section className="relative h-[70vh] min-h-[520px] overflow-hidden bg-navy">
+        <div className="absolute inset-0">
+          {heroImages.map((src, i) => (
+            <img key={i} src={src} alt="" className="absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_15s_infinite]" style={{ animationDelay: `${i * 5}s` }} />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/60" />
+        </div>
+        <div className="container-tmc relative z-10 flex h-full items-center">
+          <div className="max-w-2xl reveal">
+            <h1 className="text-balance-tight text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">Accessible. Affordable. Reliable Healthcare</h1>
+            <p className="mt-4 text-lg text-white/85">Trinity Medical Centre has served our community since 17 August 2023 with compassionate, gold-standard care.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/book-appointment" className="inline-flex items-center gap-2 rounded-full bg-tmc-red px-6 py-3 text-sm font-semibold text-white shadow hover:bg-tmc-red/90">
+                <CalendarCheck className="size-4" /> Book an Appointment <ArrowRight className="size-4" />
+              </Link>
+              <Link to="/services" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur hover:bg-white/20">
+                Our Services
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="container-tmc py-16">
         <div className="grid gap-10 lg:grid-cols-3">
