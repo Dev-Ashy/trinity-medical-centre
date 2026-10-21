@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#1A1A4D"/>
+  <rect x="100" y="200" width="1000" height="400" rx="24" fill="#F5F7FA"/>
+  <text x="600" y="420" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="48" fill="#1A1A4D">tmc-grounds</text>
+  <text x="600" y="480" text-anchor="middle" font-family="Inter, sans-serif" font-size="24" fill="#667085">Placeholder – replace with real photo</text>
+</svg>
