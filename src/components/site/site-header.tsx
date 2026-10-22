@@ -35,7 +35,7 @@ export function SiteHeader() {
             <Phone className="size-4" /> {site.phone}
           </a>
           <Button asChild className="rounded-full bg-tmc-red hover:bg-tmc-red/90">
-            <Link to="/book"><CalendarCheck className="size-4" /> Book Appointment</Link>
+            <Link to="/book-appointment"><CalendarCheck className="size-4" /> Book Appointment</Link>
           </Button>
         </div>
 
@@ -57,7 +57,7 @@ export function SiteHeader() {
               <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="py-1">{l.label}</Link>
             ))}
             <a href={site.phoneHref} className="flex items-center gap-2 pt-2"><Phone className="size-4" /> {site.phone}</a>
-            <Link to="/book" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center gap-2 rounded-full bg-tmc-red px-4 py-2 font-semibold text-white">
+            <Link to="/book-appointment" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center gap-2 rounded-full bg-tmc-red px-4 py-2 font-semibold text-white">
               <CalendarCheck className="size-4" /> Book Appointment
             </Link>
           </nav>

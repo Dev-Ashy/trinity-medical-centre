@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/page-hero";
+import { facilityImages } from "@/data/images";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -9,12 +10,6 @@ export const Route = createFileRoute("/about")({
 });
 
 function About() {
-  const images = [
-    "/images/screenshot-2026-10-21-183927.png",
-    "/images/screenshot-2026-10-21-184509.png",
-    "/images/hospital-about1.jpg",
-    "/images/slide1.jpg",
-  ];
   return (
     <div>
       <PageHero title="About Trinity Medical Centre" subtitle="Quality care rooted in compassion and community trust." />
@@ -31,9 +26,12 @@ function About() {
             <li><strong>Integrity:</strong> Transparent communication.</li>
           </ul>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {images.map((src, i) => (
-            <img key={i} src={src} alt="Healthcare setting" loading="lazy" className="h-56 w-full rounded-xl object-cover" />
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {facilityImages.slice(0, 3).map((img, i) => (
+            <figure key={i} className="overflow-hidden rounded-xl border border-border bg-white">
+              <img src={img.src} alt={img.alt} loading="lazy" className="h-56 w-full object-cover" />
+              <figcaption className="p-3 text-xs text-muted-foreground">{img.caption}</figcaption>
+            </figure>
           ))}
         </div>
       </div>

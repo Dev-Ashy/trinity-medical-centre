@@ -18,7 +18,8 @@ export function PageHero({ title, subtitle, image, imageAlt = "" }: Props) {
       )}
       <div className="container-tmc relative z-10">
         <h1 className="text-balance-tight text-3xl font-extrabold sm:text-4xl lg:text-5xl">{title}</h1>
-        {subtitle && <p className="mt-3 max-w-[60ch] text-white/90">{subtitle}</p>}
+        <div className="mt-3 h-1 w-16 rounded bg-tmc-gold" />
+        {subtitle && <p className="mt-4 max-w-[60ch] text-white/90">{subtitle}</p>}
       </div>
     </section>
   );

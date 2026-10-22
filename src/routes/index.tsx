@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarCheck, ArrowRight } from "lucide-react";
 import { services } from "@/data/site";
 import { Reveal } from "@/components/site/reveal";
+import { motion, useReducedMotion } from "framer-motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,6 +28,9 @@ const facilityImages = [
 ];
 
 function Home() {
+  const shouldReduceMotion = useReducedMotion();
+  const heroLines = ["Accessible. Affordable. Reliable Healthcare"];
+
   return (
     <div>
       <section className="relative h-[70vh] min-h-[520px] overflow-hidden bg-navy">
@@ -44,20 +48,41 @@ function Home() {
         </div>
         <div className="container-tmc relative z-10 flex h-full items-center">
           <div className="max-w-2xl">
-            <h1 className="text-balance-tight text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl animate-[fadeUp_0.8s_ease-out]">
-              Accessible. Affordable. Reliable Healthcare
+            <h1 className="text-balance-tight text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
+              {shouldReduceMotion ? (
+                heroLines[0]
+              ) : (
+                <motion.span
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                  className="block"
+                >
+                  {heroLines[0]}
+                </motion.span>
+              )}
             </h1>
-            <p className="mt-4 text-lg text-white/90 animate-[fadeUp_0.8s_0.15s_ease-out_both]">
+            <motion.p
+              className="mt-4 text-lg text-white/90"
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.15 }}
+            >
               Compassionate, gold-standard care for every patient and family.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3 animate-[fadeUp_0.8s_0.3s_ease-out_both]">
-              <Link to="/book" className="inline-flex items-center gap-2 rounded-full bg-tmc-red px-6 py-3 text-sm font-semibold text-white shadow-lg hover:scale-[1.03] hover:brightness-110 transition">
+            </motion.p>
+            <motion.div
+              className="mt-8 flex flex-wrap gap-3"
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.3 }}
+            >
+              <Link to="/book-appointment" className="inline-flex items-center gap-2 rounded-full bg-tmc-red px-6 py-3 text-sm font-semibold text-white shadow-lg hover:scale-[1.03] hover:brightness-110 transition">
                 <CalendarCheck className="size-4" /> Book an Appointment <ArrowRight className="size-4" />
               </Link>
               <Link to="/services" className="inline-flex items-center gap-2 rounded-full border-2 border-white px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition">
                 Our Services
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -71,13 +96,19 @@ function Home() {
                 At TMC we combine clinical excellence with warmth and respect. Our multidisciplinary team provides first-contact care, diagnostics, and specialist support under one roof — with clear communication and dignified treatment for every patient.
               </p>
             </div>
-            <div className="rounded-2xl border border-royal/20 bg-navy p-6 text-white">
+            <motion.div
+              className="rounded-2xl border border-royal/20 bg-navy p-6 text-white"
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 30 }}
+              whileInView={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               <h3 className="font-heading text-xl font-semibold">Quick Appointment</h3>
               <p className="mt-2 text-sm text-white/70">Online requests are not confirmed until the clinic responds.</p>
-              <Link to="/book" className="mt-4 inline-flex items-center gap-2 rounded-full bg-tmc-red px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition">
+              <Link to="/book-appointment" className="mt-4 inline-flex items-center gap-2 rounded-full bg-tmc-red px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition">
                 <CalendarCheck className="size-4" /> Book Now <ArrowRight className="size-4" />
               </Link>
-            </div>
+            </motion.div>
           </div>
         </section>
       </Reveal>
@@ -92,7 +123,7 @@ function Home() {
           </Reveal>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.slice(0, 6).map((s, i) => (
-              <Reveal key={s.slug} delay={i * 90}>
+              <Reveal key={s.slug} delay={i * 100}>
                 <Link
                   to={s.path}
                   className={`group block rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl ${
@@ -127,9 +158,7 @@ function Home() {
             </div>
             <div className="rounded-2xl border border-tmc-gold/30 bg-white p-6 shadow-sm">
               <h3 className="font-heading text-xl font-semibold text-navy">Quality Without Compromise</h3>
-              <p className="mt-2 text-sm text-charcoal/80">
-                We focus on practical, evidence-based care with attention to every detail.
-              </p>
+              <p className="mt-2 text-sm text-charcoal/80">We focus on practical, evidence-based care with attention to every detail.</p>
             </div>
           </div>
         </section>
@@ -144,10 +173,14 @@ function Home() {
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {facilityImages.map((img, i) => (
-                <figure key={i} className="overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <img src={img.src} alt={img.alt} width={1200} height={800} loading="lazy" className="h-44 w-full object-cover transition-transform duration-500 hover:scale-105" />
-                  <figcaption className="p-3 text-xs text-muted-foreground">{img.alt}</figcaption>
-                </figure>
+                <Reveal key={i} delay={i * 80}>
+                  <figure className="overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <div className="overflow-hidden">
+                      <img src={img.src} alt={img.alt} width={1200} height={800} loading="lazy" className="h-44 w-full object-cover transition-transform duration-500 hover:scale-105" />
+                    </div>
+                    <figcaption className="p-3 text-xs text-muted-foreground">{img.alt}</figcaption>
+                  </figure>
+                </Reveal>
               ))}
             </div>
           </div>
