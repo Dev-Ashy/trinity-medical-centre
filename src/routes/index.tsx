@@ -16,9 +16,10 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const heroImages = [
-    "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1586776803735-452c5f1c5d7d?q=80&w=2400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2400&auto=format&fit=crop",
+    "/images/slide1.jpg",
+    "/images/slide2.jpg",
+    "/images/slide3.jpg",
+    "/images/slide4.jpg",
   ];
 
   return (
@@ -28,7 +29,7 @@ function Home() {
           {heroImages.map((src, i) => (
             <img key={i} src={src} alt="" className="absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_15s_infinite]" style={{ animationDelay: `${i * 5}s` }} />
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/60 via-navy/40 to-navy/60" />
         </div>
         <div className="container-tmc relative z-10 flex h-full items-center">
           <div className="max-w-2xl reveal">
