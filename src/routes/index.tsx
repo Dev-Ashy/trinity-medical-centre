@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarCheck, ArrowRight } from "lucide-react";
 import { services } from "@/data/site";
 import { Reveal } from "@/components/site/reveal";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,21 +30,46 @@ const facilityImages = [
 
 function Home() {
   const shouldReduceMotion = useReducedMotion();
+  const [activeHeroImage, setActiveHeroImage] = useState(0);
   const heroLines = ["Accessible. Affordable. Reliable Healthcare"];
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+
+    const interval = window.setInterval(() => {
+      setActiveHeroImage((current) => (current + 1) % heroImages.length);
+    }, 6500);
+
+    return () => window.clearInterval(interval);
+  }, [shouldReduceMotion]);
 
   return (
     <div>
       <section className="relative h-[70vh] min-h-[520px] overflow-hidden bg-navy">
         <div className="absolute inset-0">
-          {heroImages.map((src, i) => (
+          {shouldReduceMotion ? (
             <img
-              key={i}
-              src={src}
+              src={heroImages[0]}
               alt=""
-              className="absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_20s_infinite]"
-              style={{ animationDelay: `${i * 5}s` }}
+              className="absolute inset-0 h-full w-full object-cover"
             />
-          ))}
+          ) : (
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={heroImages[activeHeroImage]}
+                src={heroImages[activeHeroImage]}
+                alt=""
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1.1 }}
+                exit={{ opacity: 0, scale: 1.12 }}
+                transition={{
+                  opacity: { duration: 1.2, ease: "easeInOut" },
+                  scale: { duration: 6.5, ease: "linear" },
+                }}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </AnimatePresence>
+          )}
           <div className="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/55 to-navy/75" />
         </div>
         <div className="container-tmc relative z-10 flex h-full items-center">
