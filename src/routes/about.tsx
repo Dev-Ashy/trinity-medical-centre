@@ -3,9 +3,7 @@ import { PageHero } from "@/components/site/page-hero";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
-    meta: [
-      { title: "About Trinity Medical Centre | Our Mission & Values" },
-    ],
+    meta: [{ title: "About Trinity Medical Centre | Our Mission & Values" }],
   }),
   component: About,
 });
@@ -19,12 +17,10 @@ function About() {
   ];
   return (
     <div>
-      <PageHero
-        title="About Trinity Medical Centre"
-        subtitle="Quality care rooted in compassion and community trust."
-      />
+      <PageHero title="About Trinity Medical Centre" subtitle="Quality care rooted in compassion and community trust." />
       <div className="container-tmc py-16">
-        <div className="prose prose-neutral max-w-none">
+        <p className="text-sm font-semibold uppercase tracking-wider text-royal">Serving our community since 17 August 2023</p>
+        <div className="prose prose-neutral mt-6 max-w-none">
           <h2>Our Mission</h2>
           <p>Trinity Medical Centre exists to deliver accessible, affordable, and reliable healthcare to individuals and families.</p>
           <h2>Our Values</h2>
@@ -35,9 +31,9 @@ function About() {
             <li><strong>Integrity:</strong> Transparent communication.</li>
           </ul>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {images.map((src,i)=>(
-            <img key={i} src={src} alt="Healthcare setting" loading="lazy" className="rounded-xl object-cover h-64 w-full" />
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {images.map((src, i) => (
+            <img key={i} src={src} alt="Healthcare setting" loading="lazy" className="h-56 w-full rounded-xl object-cover" />
           ))}
         </div>
       </div>

@@ -14,7 +14,7 @@ export const Route = createFileRoute("/faq")({
 
 function FAQ() {
   const faqs = [
-    { q: "How do I book an appointment?", a: "Use the Book an Appointment page or call 09169067009. Online requests are not confirmed until the clinic responds." },
+    { q: "How do I book an appointment?", a: "Use the Book an Appointment page. Online requests are not confirmed until the clinic responds." },
     { q: "Where is Trinity Medical Centre located?", a: "Street address is to be confirmed by TMC administration. Please call for directions." },
     { q: "What are your operating hours?", a: "Hours are pending clinic confirmation." },
     { q: "Do you offer emergency care?", a: "Accident & Emergency triage is provisional pending clinic confirmation." },
