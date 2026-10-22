@@ -55,21 +55,21 @@
   --radius: 0.75rem;
   /* Brand palette applied site-wide. Navy-purple leads, royal blue supports,
      gold and red are accents, light blue softens. White is now a small part. */
-  --navy: #1a1a4d;
+  --navy: #2C1B4D;
   --navy-foreground: #ffffff;
-  --royal: #203fb7;
-  --tmc-red: #d62828;
-  --tmc-gold: #d4af37;
+  --royal: #1E3A8A;
+  --tmc-red: #C41E3A;
+  --tmc-gold: #C9A227;
   --light-blue: #4f7dff;
   --charcoal: #2b2b2b;
 
-  --background: #f5f7fa;          /* light grey instead of plain white */
+  --background: #F8F7FC;          /* light grey instead of plain white */
   --foreground: #1a1a4d;          /* navy-purple body text on light surfaces */
   --card: #ffffff;
   --card-foreground: #1a1a4d;
   --popover: #ffffff;
   --popover-foreground: #1a1a4d;
-  --primary: #203fb7;             /* royal blue */
+  --primary: #1E3A8A;             /* royal blue */
   --primary-foreground: #ffffff;
   --secondary: #e9eefb;           /* soft royal tint, not white */
   --secondary-foreground: #1a1a4d;
@@ -77,11 +77,11 @@
   --muted-foreground: #4a4a75;
   --accent: #4f7dff;              /* light blue accent */
   --accent-foreground: #ffffff;
-  --destructive: #d62828;         /* TMC red */
+  --destructive: #C41E3A;         /* TMC red */
   --destructive-foreground: #ffffff;
   --border: #c9d3ef;
   --input: #c9d3ef;
-  --ring: #d4af37;                /* gold focus ring */
+  --ring: #C9A227;                /* gold focus ring */
 }
 
 @layer base {

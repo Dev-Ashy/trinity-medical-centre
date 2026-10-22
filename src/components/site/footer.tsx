@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { MessageCircle, Phone } from "lucide-react";
 import { site, services } from "@/data/site";
-import { tmcPhotos } from "@/data/images";
 
 const quickLinks = [
   { label: "Home", to: "/" },
@@ -21,10 +20,10 @@ export function SiteFooter() {
       <div className="container-tmc grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
-            <img src={tmcPhotos.logo} alt="Trinity Medical Centre logo" className="h-14 w-auto" />
+            <img src="/images/tmc-logo.svg" alt="Trinity Medical Centre logo" className="h-14 w-auto" />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-white/75">
-            Providing dedicated, compassionate, and gold-standard healthcare to our community since {site.established}.
+            Providing dedicated, compassionate, and gold-standard healthcare to our community.
           </p>
           <div className="mt-5 flex flex-col gap-2 text-sm">
             <a href={site.phoneHref} className="flex items-center gap-2 hover:text-tmc-gold">

@@ -16,13 +16,13 @@ export const Route = createFileRoute("/")({
 const heroImages = ["/images/slide1.jpg", "/images/slide2.jpg", "/images/slide3.jpg", "/images/slide4.jpg"];
 
 const facilityImages = [
-  { src: "https://images.unsplash.com/photo-1710074213379-2a9c2653046a?auto=format&fit=crop&w=1200&q=80", alt: "Clinical room" },
-  { src: "https://images.unsplash.com/photo-1614101062781-09a8dfb90dce?auto=format&fit=crop&w=1200&q=80", alt: "Care setting" },
   { src: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80", alt: "Monitoring equipment" },
-  { src: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80", alt: "Hospital corridor" },
-  { src: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=1200&q=80", alt: "Care setting" },
-  { src: "https://images.pexels.com/photos/6627853/pexels-photo-6627853.jpeg?auto=compress&cs=tinysrgb&w=1200", alt: "Reception area" },
-  { src: "https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg?auto=compress&cs=tinysrgb&w=1200", alt: "Clinical environment" },
+  { src: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80", alt: "Laboratory" },
+  { src: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=1200&q=80", alt: "Operating theatre" },
+  { src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80", alt: "MRI suite" },
+  { src: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80", alt: "Clinical corridor" },
+  { src: "https://images.unsplash.com/photo-1614101062781-09a8dfb90dce?auto=format&fit=crop&w=1200&q=80", alt: "Hospital bed" },
+  { src: "https://images.unsplash.com/photo-1710074213379-2a9c2653046a?auto=format&fit=crop&w=1200&q=80", alt: "Hospital bed" },
   { src: "https://images.pexels.com/photos/3376790/pexels-photo-3376790.jpeg?auto=compress&cs=tinysrgb&w=1200", alt: "Clinical room" },
 ];
 
@@ -110,6 +110,30 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <Reveal>
+        <section className="bg-[#faf7e6] py-16">
+          <div className="container-tmc grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <h2 className="font-heading text-2xl font-bold text-navy">Why Choose Trinity Medical Centre</h2>
+              <p className="mt-4 max-w-[55ch] text-charcoal/80">
+                A patient-centred approach focused on dignity, clarity, and access to quality care.
+              </p>
+              <ul className="mt-6 space-y-3 text-sm text-navy/90">
+                <li className="flex items-start gap-2"><span className="mt-1 h-2 w-2 rounded-full bg-tmc-gold"></span><span>Compassionate care delivered with respect</span></li>
+                <li className="flex items-start gap-2"><span className="mt-1 h-2 w-2 rounded-full bg-tmc-gold"></span><span>Accessible consultations and diagnostics</span></li>
+                <li className="flex items-start gap-2"><span className="mt-1 h-2 w-2 rounded-full bg-tmc-gold"></span><span>Clear communication and patient education</span></li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-tmc-gold/30 bg-white p-6 shadow-sm">
+              <h3 className="font-heading text-xl font-semibold text-navy">Quality Without Compromise</h3>
+              <p className="mt-2 text-sm text-charcoal/80">
+                We focus on practical, evidence-based care with attention to every detail.
+              </p>
+            </div>
+          </div>
+        </section>
+      </Reveal>
 
       <Reveal>
         <section className="bg-[#f0f3fb] py-16">
