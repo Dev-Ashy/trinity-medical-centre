@@ -80,11 +80,15 @@ function Home() {
             <Link to="/services" className="text-sm font-medium text-royal hover:underline">View all services →</Link>
           </div>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.slice(0,6).map((s) => (
-              <Link key={s.slug} to={s.path} className="group rounded-2xl border border-border bg-white p-6 shadow-sm transition hover:shadow-md">
-                <h3 className="font-semibold text-navy group-hover:text-royal">{s.navTitle}</h3>
-                <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{s.short}</p>
-                {s.provisional && <span className="mt-3 inline-block rounded bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase text-muted-foreground">Provisional</span>}
+            {services.slice(0,6).map((s, i) => (
+              <Link key={s.slug} to={s.path} className={`group rounded-2xl border p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+                i % 3 === 0 ? "bg-navy text-white border-navy" :
+                i % 3 === 1 ? "bg-royal text-white border-royal" :
+                "bg-tmc-gold text-navy border-tmc-gold"
+              }`}>
+                <h3 className="font-semibold group-hover:underline">{s.navTitle}</h3>
+                <p className={`mt-2 text-sm line-clamp-3 ${i % 3 === 2 ? "text-navy/80" : "text-white/80"}`}>{s.short}</p>
+                {s.provisional && <span className="mt-3 inline-block rounded bg-white/20 px-2 py-0.5 text-[10px] font-semibold uppercase">Provisional</span>}
               </Link>
             ))}
           </div>

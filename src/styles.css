@@ -52,27 +52,9 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: #ffffff;
-  --foreground: #2b2b2b;
-  --card: #ffffff;
-  --card-foreground: #2b2b2b;
-  --popover: #ffffff;
-  --popover-foreground: #2b2b2b;
-  --primary: #203fb7;
-  --primary-foreground: #ffffff;
-  --secondary: #f5f7fa;
-  --secondary-foreground: #1a1a4d;
-  --muted: #f5f7fa;
-  --muted-foreground: #667085;
-  --accent: #e9eefb;
-  --accent-foreground: #203fb7;
-  --destructive: #d62828;
-  --destructive-foreground: #ffffff;
-  --border: #d9dee7;
-  --input: #d9dee7;
-  --ring: #203fb7;
-  /* Brand colors */
+  --radius: 0.75rem;
+  /* Brand palette applied site-wide. Navy-purple leads, royal blue supports,
+     gold and red are accents, light blue softens. White is now a small part. */
   --navy: #1a1a4d;
   --navy-foreground: #ffffff;
   --royal: #203fb7;
@@ -80,6 +62,26 @@
   --tmc-gold: #d4af37;
   --light-blue: #4f7dff;
   --charcoal: #2b2b2b;
+
+  --background: #f5f7fa;          /* light grey instead of plain white */
+  --foreground: #1a1a4d;          /* navy-purple body text on light surfaces */
+  --card: #ffffff;
+  --card-foreground: #1a1a4d;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a4d;
+  --primary: #203fb7;             /* royal blue */
+  --primary-foreground: #ffffff;
+  --secondary: #e9eefb;           /* soft royal tint, not white */
+  --secondary-foreground: #1a1a4d;
+  --muted: #e9eefb;
+  --muted-foreground: #4a4a75;
+  --accent: #4f7dff;              /* light blue accent */
+  --accent-foreground: #ffffff;
+  --destructive: #d62828;         /* TMC red */
+  --destructive-foreground: #ffffff;
+  --border: #c9d3ef;
+  --input: #c9d3ef;
+  --ring: #d4af37;                /* gold focus ring */
 }
 
 @layer base {
