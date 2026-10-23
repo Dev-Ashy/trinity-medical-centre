@@ -2,8 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarCheck, ArrowRight } from "lucide-react";
 import { services } from "@/data/site";
 import { Reveal } from "@/components/site/reveal";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { facilityImages } from "@/data/images";
 import { useEffect, useState } from "react";
+import { EmployeeOfMonthSection } from "@/components/admin/employee-of-month";
+import { LeadershipProfile } from "@/components/admin/leadership-profile";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,59 +20,37 @@ export const Route = createFileRoute("/")({
 
 const heroImages = ["/images/slide1.jpg", "/images/slide2.jpg", "/images/slide3.jpg", "/images/slide4.jpg"];
 
-const facilityImages = [
-  { src: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80", alt: "Monitoring equipment" },
-  { src: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80", alt: "Laboratory" },
-  { src: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=1200&q=80", alt: "Operating theatre" },
-  { src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80", alt: "MRI suite" },
-  { src: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80", alt: "Clinical corridor" },
-  { src: "https://images.unsplash.com/photo-1614101062781-09a8dfb90dce?auto=format&fit=crop&w=1200&q=80", alt: "Hospital bed" },
-  { src: "https://images.unsplash.com/photo-1710074213379-2a9c2653046a?auto=format&fit=crop&w=1200&q=80", alt: "Hospital bed" },
-  { src: "https://images.pexels.com/photos/3376790/pexels-photo-3376790.jpeg?auto=compress&cs=tinysrgb&w=1200", alt: "Clinical room" },
-];
-
 function Home() {
   const shouldReduceMotion = useReducedMotion();
-  const [activeHeroImage, setActiveHeroImage] = useState(0);
   const heroLines = ["Accessible. Affordable. Reliable Healthcare"];
+  const [galleryImgs, setGalleryImgs] = useState(facilityImages);
 
   useEffect(() => {
-    if (shouldReduceMotion) return;
-
-    const interval = window.setInterval(() => {
-      setActiveHeroImage((current) => (current + 1) % heroImages.length);
-    }, 6500);
-
-    return () => window.clearInterval(interval);
-  }, [shouldReduceMotion]);
+    try {
+      const saved = localStorage.getItem("tmc_gallery");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) {
+          const merged = [...parsed.map((p: any) => ({ src: p.src, alt: p.caption, caption: p.caption })), ...facilityImages];
+          setGalleryImgs(merged.slice(0, 8));
+        }
+      }
+    } catch {}
+  }, []);
 
   return (
     <div>
       <section className="relative h-[70vh] min-h-[520px] overflow-hidden bg-navy">
         <div className="absolute inset-0">
-          {shouldReduceMotion ? (
+          {heroImages.map((src, i) => (
             <img
-              src={heroImages[0]}
+              key={i}
+              src={src}
               alt=""
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_20s_infinite]"
+              style={{ animationDelay: `${i * 5}s` }}
             />
-          ) : (
-            <AnimatePresence initial={false}>
-              <motion.img
-                key={heroImages[activeHeroImage]}
-                src={heroImages[activeHeroImage]}
-                alt=""
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1.1 }}
-                exit={{ opacity: 0, scale: 1.12 }}
-                transition={{
-                  opacity: { duration: 1.2, ease: "easeInOut" },
-                  scale: { duration: 6.5, ease: "linear" },
-                }}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            </AnimatePresence>
-          )}
+          ))}
           <div className="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/55 to-navy/75" />
         </div>
         <div className="container-tmc relative z-10 flex h-full items-center">
@@ -193,18 +174,21 @@ function Home() {
       <Reveal>
         <section className="bg-[#f0f3fb] py-16">
           <div className="container-tmc">
-            <h2 className="font-heading text-2xl font-bold text-navy">Facility & Experience</h2>
-            <p className="mt-3 max-w-[65ch] text-charcoal/80">
-              Our centre is designed for comfort and privacy. The images below are illustrative clinical environments, not photographs of TMC premises.
-            </p>
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <h2 className="font-heading text-2xl font-bold text-navy">Facility & Experience</h2>
+                <p className="mt-2 text-charcoal/80">Illustrative clinical environments and equipment.</p>
+              </div>
+              <Link to="/gallery" className="text-sm font-medium text-royal hover:underline">View full gallery →</Link>
+            </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {facilityImages.map((img, i) => (
+              {galleryImgs.map((img: any, i) => (
                 <Reveal key={i} delay={i * 80}>
                   <figure className="overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                     <div className="overflow-hidden">
-                      <img src={img.src} alt={img.alt} width={1200} height={800} loading="lazy" className="h-44 w-full object-cover transition-transform duration-500 hover:scale-105" />
+                      <img src={img.src} alt={img.alt || img.caption} width={1200} height={800} loading="lazy" className="h-44 w-full object-cover transition-transform duration-500 hover:scale-105" />
                     </div>
-                    <figcaption className="p-3 text-xs text-muted-foreground">{img.alt}</figcaption>
+                    <figcaption className="p-3 text-xs text-muted-foreground">{img.caption || img.alt}</figcaption>
                   </figure>
                 </Reveal>
               ))}
@@ -217,6 +201,3 @@ function Home() {
     </div>
   );
 }
-
-import { EmployeeOfMonthSection } from "@/components/admin/employee-of-month";
-import { LeadershipProfile } from "@/components/admin/leadership-profile";
