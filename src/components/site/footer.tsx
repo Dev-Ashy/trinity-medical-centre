@@ -11,7 +11,8 @@ const quickLinks = [
   { label: "Facility Gallery", to: "/gallery" },
   { label: "Patient Information", to: "/patient-information" },
   { label: "Frequently Asked Questions", to: "/faq" },
-  { label: "Contact & Location", to: "/contact" },
+  { label: "Contact   { label: "Contact & Location", to: "/contact" }, Location", to: "/contact" },
+  { label: "Admin Portal", to: "/admin/login" },
 ];
 
 export function SiteFooter() {
