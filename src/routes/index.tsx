@@ -7,6 +7,7 @@ import { facilityImages } from "@/data/images";
 import { useEffect, useState } from "react";
 import { EmployeeOfMonthSection } from "@/components/admin/employee-of-month";
 import { LeadershipProfile } from "@/components/admin/leadership-profile";
+import { getGalleryItems } from "@/lib/gallery-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,31 +19,31 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const heroImages = ["/images/slide1.jpg", "/images/slide2.jpg", "/images/slide3.jpg", "/images/slide4.jpg"];
+const defaultHero = ["/images/slide1.jpg", "/images/slide2.jpg", "/images/slide3.jpg", "/images/slide4.jpg"];
 
 function Home() {
   const shouldReduceMotion = useReducedMotion();
   const heroLines = ["Accessible. Affordable. Reliable Healthcare"];
-  const [galleryImgs, setGalleryImgs] = useState(facilityImages);
+  const [galleryImgs, setGalleryImgs] = useState<any[]>(facilityImages.slice(0, 8));
+  const [heroImgs, setHeroImgs] = useState(defaultHero);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("tmc_gallery");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.length > 0) {
-          const merged = [...parsed.map((p: any) => ({ src: p.src, alt: p.caption, caption: p.caption })), ...facilityImages];
-          setGalleryImgs(merged.slice(0, 8));
-        }
-      }
-    } catch {}
+    const items = getGalleryItems();
+    const homepage = items.filter((i) => i.section === "homepage");
+    if (homepage.length > 0) {
+      setGalleryImgs([...homepage.map((i) => ({ src: i.src, alt: i.caption, caption: i.caption })), ...facilityImages.slice(0, 8 - homepage.length)]);
+    }
+    const hero = items.filter((i) => i.section === "hero");
+    if (hero.length > 0) {
+      setHeroImgs([...hero.map((i) => i.src), ...defaultHero]);
+    }
   }, []);
 
   return (
     <div>
       <section className="relative h-[70vh] min-h-[520px] overflow-hidden bg-navy">
         <div className="absolute inset-0">
-          {heroImages.map((src, i) => (
+          {heroImgs.slice(0, 6).map((src, i) => (
             <img
               key={i}
               src={src}

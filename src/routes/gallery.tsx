@@ -3,6 +3,7 @@ import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/reveal";
 import { useEffect, useState } from "react";
 import { facilityImages } from "@/data/images";
+import { getGalleryItems } from "@/lib/gallery-store";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -15,19 +16,14 @@ export const Route = createFileRoute("/gallery")({
 });
 
 function Gallery() {
-  const [images, setImages] = useState(facilityImages);
+  const [images, setImages] = useState<any[]>(facilityImages);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("tmc_gallery");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.length > 0) {
-          const merged = [...parsed.map((p: any) => ({ src: p.src, caption: p.caption, alt: p.caption })), ...facilityImages];
-          setImages(merged);
-        }
-      }
-    } catch {}
+    const items = getGalleryItems().filter((i) => i.section === "gallery");
+    if (items.length > 0) {
+      const custom = items.map((i) => ({ src: i.src, caption: i.caption, alt: i.caption }));
+      setImages([...custom, ...facilityImages]);
+    }
   }, []);
 
   return (
@@ -40,12 +36,12 @@ function Gallery() {
         <div className="container-tmc">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {images.map((img, i) => (
-              <Reveal key={i} delay={i * 80}>
+              <Reveal key={i} delay={i * 60}>
                 <figure className="group overflow-hidden rounded-xl border border-border bg-white shadow-sm">
                   <div className="overflow-hidden">
                     <img
                       src={img.src}
-                      alt={(img as any).alt || img.caption}
+                      alt={img.alt || img.caption}
                       width={1200}
                       height={800}
                       loading="lazy"
