@@ -212,6 +212,11 @@ function Home() {
           </div>
         </section>
       </Reveal>
+      <LeadershipProfile />
+      <EmployeeOfMonthSection />
     </div>
   );
 }
+
+import { EmployeeOfMonthSection } from "@/components/admin/employee-of-month";
+import { LeadershipProfile } from "@/components/admin/leadership-profile";

@@ -21,6 +21,11 @@ import { Route as PatientInformationRouteImport } from './routes/patient-informa
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as TermsOfUseRouteImport } from './routes/terms-of-use'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminEmployeesRouteImport } from './routes/admin/employees'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminProfileRouteImport } from './routes/admin/profile'
+import { Route as AdminSettingsRouteImport } from './routes/admin/settings'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -83,6 +88,31 @@ const TermsOfUseRoute = TermsOfUseRouteImport.update({
   path: '/terms-of-use',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminEmployeesRoute = AdminEmployeesRouteImport.update({
+  id: '/admin/employees',
+  path: '/admin/employees',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProfileRoute = AdminProfileRouteImport.update({
+  id: '/admin/profile',
+  path: '/admin/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/admin/settings',
+  path: '/admin/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -102,7 +132,12 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms-of-use': typeof TermsOfUseRoute
+  '/admin/employees': typeof AdminEmployeesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,7 +152,12 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms-of-use': typeof TermsOfUseRoute
+  '/admin/employees': typeof AdminEmployeesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,7 +173,12 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms-of-use': typeof TermsOfUseRoute
+  '/admin/employees': typeof AdminEmployeesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,7 +195,12 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/services'
     | '/terms-of-use'
+    | '/admin/employees'
+    | '/admin/login'
+    | '/admin/profile'
+    | '/admin/settings'
     | '/services/$slug'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -165,7 +215,12 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/services'
     | '/terms-of-use'
+    | '/admin/employees'
+    | '/admin/login'
+    | '/admin/profile'
+    | '/admin/settings'
     | '/services/$slug'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -180,7 +235,12 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/services'
     | '/terms-of-use'
+    | '/admin/employees'
+    | '/admin/login'
+    | '/admin/profile'
+    | '/admin/settings'
     | '/services/$slug'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,6 +256,11 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   TermsOfUseRoute: typeof TermsOfUseRoute
+  AdminEmployeesRoute: typeof AdminEmployeesRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminProfileRoute: typeof AdminProfileRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -284,6 +349,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsOfUseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/employees': {
+      id: '/admin/employees'
+      path: '/admin/employees'
+      fullPath: '/admin/employees'
+      preLoaderRoute: typeof AdminEmployeesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/profile': {
+      id: '/admin/profile'
+      path: '/admin/profile'
+      fullPath: '/admin/profile'
+      preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/$slug': {
       id: '/services/$slug'
       path: '/$slug'
@@ -319,6 +419,11 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ServicesRoute: ServicesRouteWithChildren,
   TermsOfUseRoute: TermsOfUseRoute,
+  AdminEmployeesRoute: AdminEmployeesRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminProfileRoute: AdminProfileRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
