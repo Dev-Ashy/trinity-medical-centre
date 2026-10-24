@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="Trinity Medical Centre mark">
+  <rect x="0.5" y="0.5" width="47" height="47" rx="10" fill="#2C1B4D" stroke="#C9A227" stroke-opacity="0.55" />
+  <path d="M24 12.5v23M12.5 24h23" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" />
+  <circle cx="24" cy="24" r="3.4" fill="#C9A227" />
+</svg>

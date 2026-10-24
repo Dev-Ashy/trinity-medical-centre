@@ -31,7 +31,7 @@ function AdminLayout() {
   if (!ok) return null;
 
   return (
-    <div className="flex min-h-screen bg-[#F8F7FC]">
+    <div className="flex min-h-screen bg-paper">
       <aside className="w-64 bg-navy text-white flex flex-col">
         <div className="p-6 border-b border-white/10">
           <h2 className="text-lg font-bold">TMC Admin</h2>

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { MessageCircle, Phone } from "lucide-react";
+import { MessageCircle, Phone, ArrowUpRight } from "lucide-react";
 import { site, services } from "@/data/site";
 
 const quickLinks = [
@@ -17,37 +17,58 @@ const quickLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-navy text-white">
+    <footer className="bg-ink text-white">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-tmc-gold/60 to-transparent" />
+
+      {/* Closing statement */}
+      <div className="container-tmc flex flex-col gap-6 border-b border-white/10 py-12 md:flex-row md:items-center md:justify-between">
+        <p className="max-w-[24ch] font-heading text-2xl font-medium leading-snug text-white sm:text-3xl">
+          Care you can reach, whenever you need it.
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href={site.phoneHref}
+            className="inline-flex items-center gap-2 rounded-sm border border-white/25 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-tmc-gold hover:text-tmc-gold"
+          >
+            <Phone className="size-4" aria-hidden="true" /> {site.phone}
+          </a>
+          <a
+            href={site.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-sm border border-white/25 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-tmc-gold hover:text-tmc-gold"
+          >
+            <MessageCircle className="size-4" aria-hidden="true" /> WhatsApp
+          </a>
+          <Link
+            to="/book-appointment"
+            className="inline-flex items-center gap-2 rounded-sm bg-tmc-red px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#9d1333]"
+          >
+            Book appointment <ArrowUpRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </div>
+
       <div className="container-tmc grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-center gap-3">
-            <img src="/images/tmc-logo.svg" alt="Trinity Medical Centre logo" className="h-14 w-auto" />
-          </div>
-          <p className="mt-4 text-sm leading-relaxed text-white/75">
-            Providing dedicated, compassionate, and gold-standard healthcare to our community.
+          <Link to="/" className="flex items-center gap-3" aria-label="Trinity Medical Centre home">
+            <img src="/images/tmc-mark.svg" alt="" className="h-9 w-9" />
+            <span className="flex flex-col leading-none">
+              <span className="font-heading text-[1.2rem] font-medium text-white">Trinity</span>
+              <span className="label-caps mt-1 text-[9px] text-tmc-gold/90">Medical Centre</span>
+            </span>
+          </Link>
+          <p className="mt-5 max-w-[34ch] text-sm leading-relaxed text-white/65">
+            Accessible, affordable and reliable healthcare for our community.
           </p>
-          <div className="mt-5 flex flex-col gap-2 text-sm">
-            <a href={site.phoneHref} className="flex items-center gap-2 hover:text-tmc-gold">
-              <Phone className="size-4 shrink-0 text-tmc-gold" aria-hidden="true" /> {site.phone}
-            </a>
-            <a
-              href={site.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-tmc-gold"
-            >
-              <MessageCircle className="size-4 shrink-0 text-tmc-gold" aria-hidden="true" /> {site.whatsappDisplay}{" "}
-              (WhatsApp)
-            </a>
-          </div>
         </div>
 
         <nav aria-label="Footer quick links">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-tmc-gold">Quick Links</h3>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
+          <h2 className="label-caps text-tmc-gold">Quick links</h2>
+          <ul className="mt-4 space-y-2.5 text-sm text-white/70">
             {quickLinks.map((l) => (
               <li key={l.to}>
-                <Link to={l.to} className="hover:text-tmc-gold">
+                <Link to={l.to} className="transition-colors hover:text-white">
                   {l.label}
                 </Link>
               </li>
@@ -56,11 +77,11 @@ export function SiteFooter() {
         </nav>
 
         <nav aria-label="Footer services">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-tmc-gold">Medical Services</h3>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
+          <h2 className="label-caps text-tmc-gold">Medical services</h2>
+          <ul className="mt-4 space-y-2.5 text-sm text-white/70">
             {services.map((s) => (
               <li key={s.slug}>
-                <Link to={s.path} className="hover:text-tmc-gold">
+                <Link to={s.path} className="transition-colors hover:text-white">
                   {s.navTitle}
                 </Link>
               </li>
@@ -69,34 +90,33 @@ export function SiteFooter() {
         </nav>
 
         <div>
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-tmc-gold">Visit Us</h3>
-          <ul className="mt-4 space-y-3 text-sm text-white/80">
+          <h2 className="label-caps text-tmc-gold">Visit us</h2>
+          <ul className="mt-4 space-y-4 text-sm text-white/70">
             <li>
-              <span className="block font-semibold text-white">Clinic address</span>
-              <span className="text-white/70">To be confirmed by TMC administration</span>
+              <span className="block text-white">Clinic address</span>
+              <span>To be confirmed by TMC administration</span>
             </li>
             <li>
-              <span className="block font-semibold text-white">Operating hours</span>
-              <span className="text-white/70">Pending clinic confirmation</span>
+              <span className="block text-white">Operating hours</span>
+              <span>Pending clinic confirmation</span>
             </li>
             <li>
-              <span className="block font-semibold text-white">Telephone triage</span>
-              <span className="text-white/70">Available around the clock via the main line</span>
+              <span className="block text-white">Telephone triage</span>
+              <span>Available around the clock via the main line</span>
             </li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-tmc flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/60 sm:flex-row">
+        <div className="container-tmc flex flex-col items-center justify-between gap-3 py-5 text-xs text-white/50 sm:flex-row">
           <p>{site.credit}</p>
-          <div className="flex items-center gap-4">
-            <Link to="/privacy-policy" className="hover:text-tmc-gold">
-              Privacy Policy
+          <div className="flex items-center gap-5">
+            <Link to="/privacy-policy" className="transition-colors hover:text-tmc-gold">
+              Privacy policy
             </Link>
-            <span aria-hidden="true">·</span>
-            <Link to="/terms-of-use" className="hover:text-tmc-gold">
-              Terms of Use
+            <Link to="/terms-of-use" className="transition-colors hover:text-tmc-gold">
+              Terms of use
             </Link>
           </div>
         </div>

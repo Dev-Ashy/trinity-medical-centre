@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/page-hero";
-import { Reveal } from "@/components/site/reveal";
+import { SectionHeading } from "@/components/site/section-heading";
 import { useEffect, useState } from "react";
 import { facilityImages } from "@/data/images";
 import { getGalleryItems } from "@/lib/gallery-store";
+import { motion, useReducedMotion } from "motion/react";
+import { cascadeItem, staggerParent, viewportOnce } from "@/lib/motion";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -16,6 +18,7 @@ export const Route = createFileRoute("/gallery")({
 });
 
 function Gallery() {
+  const reduce = useReducedMotion();
   const [images, setImages] = useState<any[]>(facilityImages);
 
   useEffect(() => {
@@ -29,32 +32,48 @@ function Gallery() {
   return (
     <div>
       <PageHero
-        title="Facility Gallery"
+        title="Facility gallery"
         subtitle="Illustrative clinical environments and medical equipment — not photographs of TMC premises."
       />
-      <section className="bg-[#F8F7FC] py-16">
+
+      <section className="bg-paper py-20 sm:py-24">
         <div className="container-tmc">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <SectionHeading
+            label="Visual reference"
+            title="The kind of rooms and equipment we work to."
+            description="Reference imagery only. Where a specific room, device or service has not been confirmed, we say so rather than implying it is on site."
+          />
+
+          <motion.div
+            className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            variants={staggerParent}
+            initial={reduce ? undefined : "hidden"}
+            whileInView="show"
+            viewport={viewportOnce}
+          >
             {images.map((img, i) => (
-              <Reveal key={i} delay={i * 60}>
-                <figure className="group overflow-hidden rounded-xl border border-border bg-white shadow-sm">
-                  <div className="overflow-hidden">
-                    <img
-                      src={img.src}
-                      alt={img.alt || img.caption}
-                      width={1200}
-                      height={800}
-                      loading="lazy"
-                      className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <figcaption className="p-3 text-xs text-muted-foreground">{img.caption}</figcaption>
-                </figure>
-              </Reveal>
+              <motion.figure key={`${img.src}-${i}`} variants={cascadeItem} className="group">
+                <div className="overflow-hidden rounded-sm bg-ink/5">
+                  <img
+                    src={img.src}
+                    alt={img.alt || img.caption}
+                    width={1200}
+                    height={800}
+                    loading="lazy"
+                    className="h-52 w-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.045]"
+                  />
+                </div>
+                <figcaption className="mt-3 flex items-center gap-2 text-[0.72rem] text-ink/55">
+                  <span className="h-px w-4 bg-tmc-gold" aria-hidden="true" />
+                  {img.caption}
+                </figcaption>
+              </motion.figure>
             ))}
-          </div>
-          <p className="mt-8 text-xs text-muted-foreground">
-            Images are illustrative clinical environments and equipment. They are not photographs of Trinity Medical Centre premises.
+          </motion.div>
+
+          <p className="mt-12 max-w-[64ch] border-l border-tmc-gold/50 pl-5 text-xs leading-relaxed text-muted-foreground">
+            Images are illustrative clinical environments and equipment. They are not photographs of
+            Trinity Medical Centre premises, staff or patients.
           </p>
         </div>
       </section>

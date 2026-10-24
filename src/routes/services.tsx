@@ -1,56 +1,81 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/page-hero";
 import { services } from "@/data/site";
-import { Reveal } from "@/components/site/reveal";
+import { SectionHeading } from "@/components/site/section-heading";
+import { motion, useReducedMotion } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
+import { cascadeItem, staggerParent, viewportOnce } from "@/lib/motion";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
       { title: "Medical Services | Trinity Medical Centre" },
-      { name: "description", content: "Explore Trinity Medical Centre's medical services including outpatient, laboratory, eye care, women's health, paediatrics and more." },
+      {
+        name: "description",
+        content:
+          "Outpatient care, diagnostic laboratory, eye care, women's health, paediatrics, pharmacy and emergency triage at Trinity Medical Centre.",
+      },
     ],
   }),
   component: Services,
 });
 
-const styles = [
-  { card: "bg-navy text-white border-navy", text: "text-white/80", badge: "bg-white/20", link: "text-tmc-gold" },
-  { card: "bg-royal text-white border-royal", text: "text-white/80", badge: "bg-white/20", link: "text-tmc-gold" },
-  { card: "bg-tmc-gold text-navy border-tmc-gold", text: "text-navy/80", badge: "bg-navy/10 text-navy", link: "text-navy" },
-  { card: "bg-white text-navy border-tmc-gold/40 border-l-4 border-l-tmc-gold", text: "text-navy/80", badge: "bg-tmc-gold/20 text-navy", link: "text-royal" },
-];
-
 function Services() {
+  const reduce = useReducedMotion();
+
   return (
     <div>
       <PageHero
-        title="All Medical Services"
-        subtitle="Comprehensive primary and specialist care, with clear information on availability."
+        title="Medical services"
+        subtitle="Primary and specialist care, with honest information about what is available today and what is still being confirmed."
       />
-      <section className="bg-[#F8F7FC] py-16">
+
+      <section className="bg-paper py-20 sm:py-24">
         <div className="container-tmc">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s, i) => {
-              const st = styles[i % styles.length];
-              return (
-                <Reveal key={s.slug} delay={i * 80}>
-                  <Link
-                    to={s.path}
-                    className={`group block rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${st.card}`}
-                  >
-                    <h3 className="text-lg font-semibold group-hover:underline">{s.navTitle}</h3>
-                    <p className={`mt-2 text-sm ${st.text}`}>{s.short}</p>
-                    {s.provisional && (
-                      <span className={`mt-3 inline-block rounded px-2 py-0.5 text-[10px] font-semibold uppercase ${st.badge}`}>Provisional – pending clinic confirmation</span>
-                    )}
-                    <div className={`mt-4 text-sm font-medium ${st.link}`}>Learn more →</div>
-                  </Link>
-                </Reveal>
-              );
-            })}
-          </div>
-          <p className="mt-8 max-w-[65ch] text-xs text-muted-foreground">
-            Service availability, pricing, and clinical details are subject to confirmation by TMC. Provisional services are listed for planning and will be updated when confirmed.
+          <SectionHeading
+            label="Clinical directory"
+            title="Care organised around what you came in for."
+            description="Each service links to a short, plain-language summary. Provisional services are marked and will be updated once the clinic confirms them."
+          />
+
+          <motion.div
+            className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+            variants={staggerParent}
+            initial={reduce ? undefined : "hidden"}
+            whileInView="show"
+            viewport={viewportOnce}
+          >
+            {services.map((s) => (
+              <motion.div key={s.slug} variants={cascadeItem} className="h-full">
+                <Link
+                  to={s.path}
+                  className="group relative flex h-full flex-col justify-between gap-8 rounded-sm border border-line bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-tmc-gold/60 hover:shadow-[0_24px_45px_-32px_rgba(21,17,31,0.5)]"
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-heading text-[1.3rem] font-medium leading-snug text-ink">{s.navTitle}</h3>
+                      <ArrowUpRight
+                        className="mt-1 size-4 shrink-0 text-ink/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-tmc-gold"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <p className="mt-3 text-[0.9rem] leading-relaxed text-muted-foreground">{s.short}</p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="h-px w-6 bg-tmc-gold/70" aria-hidden="true" />
+                    <span className="label-caps text-[9px] text-ink/45">
+                      {s.provisional ? "Provisional — pending confirmation" : "Available"}
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <p className="mt-10 max-w-[64ch] border-l border-tmc-gold/50 pl-5 text-xs leading-relaxed text-muted-foreground">
+            Service availability, pricing and clinical detail are subject to confirmation by TMC
+            administration. Nothing on this page is a substitute for a consultation.
           </p>
         </div>
       </section>

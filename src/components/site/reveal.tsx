@@ -1,27 +1,31 @@
-import { useRef } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef, type ReactNode } from "react";
+import { motion, useInView, useReducedMotion } from "motion/react";
+import { easeOut } from "@/lib/motion";
 
 type RevealProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
+  /** Milliseconds. Prefer <Section>/stagger for groups; this is for single blocks. */
   delay?: number;
+  /** Offset from the viewport edge before the reveal fires. */
+  margin?: string;
 };
 
-export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
+export function Reveal({ children, className = "", delay = 0, margin = "-70px" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const shouldReduceMotion = useReducedMotion();
+  const inView = useInView(ref, { once: true, margin: margin as never });
+  const reduce = useReducedMotion();
 
-  if (shouldReduceMotion) {
+  if (reduce) {
     return <div className={className}>{children}</div>;
   }
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.6, ease: "easeOut", delay: delay / 1000 }}
+      initial={{ opacity: 0, y: 36 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
+      transition={{ duration: 0.6, ease: easeOut, delay: delay / 1000 }}
       className={className}
     >
       {children}
