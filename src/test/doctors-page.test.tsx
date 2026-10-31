@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { Doctors } from "@/routes/doctors";
+import { DoctorsPage } from "@/components/site/doctors-page";
 
 describe("doctors page", () => {
   it("shows photo-ready sections without inventing team profiles", () => {
-    render(<Doctors />);
+    render(<DoctorsPage />);
 
     expect(
       screen.getByRole("heading", { name: "The people who care for you" }),

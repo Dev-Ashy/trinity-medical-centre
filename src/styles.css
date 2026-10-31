@@ -153,6 +153,16 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+
+    .home-hero-slide {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    .home-hero-slide:not(:first-child) {
+      display: none;
+    }
   }
 }
 
@@ -227,8 +237,8 @@
 @keyframes slideshow {
   0% { opacity: 0; transform: scale(1.04); }
   4% { opacity: 1; }
-  21% { opacity: 1; }
-  25% { opacity: 0; }
+  24% { opacity: 1; }
+  29% { opacity: 0; }
   100% { opacity: 0; transform: scale(1.1); }
 }
 

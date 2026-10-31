@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarCheck, ArrowRight, ArrowUpRight } from "lucide-react";
+import { CalendarCheck, ArrowRight, ArrowUpRight, Pause, Play } from "lucide-react";
 import { services } from "@/data/site";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Reveal } from "@/components/site/reveal";
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const defaultHero = ["/images/slide1.jpg", "/images/slide2.jpg", "/images/slide3.jpg", "/images/slide4.jpg"];
+const defaultHero = facilityImages.map((image) => image.src);
 
 const headline = ["Care that is", "accessible, affordable", "and reliable."];
 
@@ -49,6 +49,7 @@ function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const [galleryImgs, setGalleryImgs] = useState<any[]>(facilityImages.slice(0, 8));
   const [heroImgs, setHeroImgs] = useState(defaultHero);
+  const [heroPaused, setHeroPaused] = useState(false);
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
@@ -72,13 +73,16 @@ function Home() {
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative isolate min-h-[86vh] overflow-hidden bg-ink">
         <motion.div className="absolute inset-0" style={reduce ? undefined : { y: heroY, opacity: heroFade }}>
-          {heroImgs.slice(0, 6).map((src, i) => (
+          {heroImgs.slice(0, 4).map((src, i) => (
             <img
               key={`${src}-${i}`}
               src={src}
               alt=""
-              className="absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_24s_infinite]"
-              style={{ animationDelay: `${i * 6}s` }}
+              className="home-hero-slide absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_24s_infinite]"
+              style={{
+                animationDelay: `${i * 6}s`,
+                animationPlayState: heroPaused ? "paused" : "running",
+              }}
             />
           ))}
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/35" />
@@ -160,6 +164,19 @@ function Home() {
             style={{ transformOrigin: "top" }}
           />
         </motion.div>
+
+        <button
+          type="button"
+          onClick={() => setHeroPaused((paused) => !paused)}
+          aria-label={heroPaused ? "Play homepage slideshow" : "Pause homepage slideshow"}
+          className="absolute bottom-5 right-5 z-20 inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm border border-white/40 bg-ink/75 text-white transition-colors hover:bg-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tmc-gold sm:right-10"
+        >
+          {heroPaused ? (
+            <Play className="size-4" aria-hidden="true" />
+          ) : (
+            <Pause className="size-4" aria-hidden="true" />
+          )}
+        </button>
       </section>
 
       {/* ── Service ticker ─────────────────────────────────────── */}

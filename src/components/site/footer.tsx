@@ -5,7 +5,7 @@ import { site, services } from "@/data/site";
 const quickLinks = [
   { label: "Home", to: "/" },
   { label: "About TMC", to: "/about" },
-  { label: "Doctors & Medical Team", to: "/doctors" },
+  { label: "Our doctors and care team", to: "/doctors" },
   { label: "Book an Appointment", to: "/book-appointment" },
   { label: "Health Tips & Articles", to: "/health-tips" },
   { label: "Facility Gallery", to: "/gallery" },

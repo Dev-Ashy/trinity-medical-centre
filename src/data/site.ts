@@ -105,7 +105,7 @@ export const mainNav: NavItem[] = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
   { label: "Services", to: "/services" },
-  { label: "Doctors", to: "/doctors" },
+  { label: "Our team", to: "/doctors" },
   { label: "Health Tips", to: "/health-tips" },
   { label: "Gallery", to: "/gallery" },
   { label: "FAQ", to: "/faq" },
