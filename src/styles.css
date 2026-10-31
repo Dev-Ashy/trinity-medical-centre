@@ -166,6 +166,20 @@
   }
 }
 
+.home-hero-toggle:checked ~ .home-hero-background .home-hero-slide {
+  animation-play-state: paused;
+}
+
+.home-hero-toggle:checked ~ .home-hero-toggle-label .home-hero-pause-icon,
+.home-hero-toggle:not(:checked) ~ .home-hero-toggle-label .home-hero-play-icon {
+  display: none;
+}
+
+.home-hero-toggle:focus-visible ~ .home-hero-toggle-label {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 3px;
+}
+
 @layer utilities {
   .container-tmc {
     margin-inline: auto;

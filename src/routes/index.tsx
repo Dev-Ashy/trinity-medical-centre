@@ -49,7 +49,6 @@ function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const [galleryImgs, setGalleryImgs] = useState<any[]>(facilityImages.slice(0, 8));
   const [heroImgs, setHeroImgs] = useState(defaultHero);
-  const [heroPaused, setHeroPaused] = useState(false);
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
@@ -72,17 +71,23 @@ function Home() {
     <div>
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative isolate min-h-[86vh] overflow-hidden bg-ink">
-        <motion.div className="absolute inset-0" style={reduce ? undefined : { y: heroY, opacity: heroFade }}>
+        <input
+          id="home-hero-pause"
+          type="checkbox"
+          aria-label="Pause or resume homepage slideshow"
+          className="home-hero-toggle peer sr-only"
+        />
+        <motion.div
+          className="home-hero-background absolute inset-0"
+          style={reduce ? undefined : { y: heroY, opacity: heroFade }}
+        >
           {heroImgs.slice(0, 4).map((src, i) => (
             <img
               key={`${src}-${i}`}
               src={src}
               alt=""
               className="home-hero-slide absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_24s_infinite]"
-              style={{
-                animationDelay: `${i * 6}s`,
-                animationPlayState: heroPaused ? "paused" : "running",
-              }}
+              style={{ animationDelay: `${i * 6}s` }}
             />
           ))}
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/35" />
@@ -165,18 +170,13 @@ function Home() {
           />
         </motion.div>
 
-        <button
-          type="button"
-          onClick={() => setHeroPaused((paused) => !paused)}
-          aria-label={heroPaused ? "Play homepage slideshow" : "Pause homepage slideshow"}
-          className="absolute bottom-5 right-5 z-20 inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm border border-white/40 bg-ink/75 text-white transition-colors hover:bg-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tmc-gold sm:right-10"
+        <label
+          htmlFor="home-hero-pause"
+          className="home-hero-toggle-label absolute bottom-5 right-5 z-20 inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-sm border border-white/40 bg-ink/75 text-white transition-colors hover:bg-ink sm:right-10"
         >
-          {heroPaused ? (
-            <Play className="size-4" aria-hidden="true" />
-          ) : (
-            <Pause className="size-4" aria-hidden="true" />
-          )}
-        </button>
+          <Pause className="home-hero-pause-icon size-4" aria-hidden="true" />
+          <Play className="home-hero-play-icon size-4" aria-hidden="true" />
+        </label>
       </section>
 
       {/* ── Service ticker ─────────────────────────────────────── */}
