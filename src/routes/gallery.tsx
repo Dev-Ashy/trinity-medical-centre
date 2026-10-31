@@ -11,7 +11,7 @@ export const Route = createFileRoute("/gallery")({
   head: () => ({
     meta: [
       { title: "Facility Gallery | Trinity Medical Centre" },
-      { name: "description", content: "Illustrative clinical environments and medical equipment." },
+      { name: "description", content: "Photographs of the rooms and facilities at Trinity Medical Centre." },
     ],
   }),
   component: Gallery,
@@ -32,16 +32,16 @@ function Gallery() {
   return (
     <div>
       <PageHero
-        title="Facility gallery"
-        subtitle="Illustrative clinical environments and medical equipment — not photographs of TMC premises."
+        title="Inside Trinity Medical Centre"
+        subtitle="Photographs of the rooms and facilities at our centre."
       />
 
       <section className="bg-paper py-20 sm:py-24">
         <div className="container-tmc">
           <SectionHeading
-            label="Visual reference"
-            title="The kind of rooms and equipment we work to."
-            description="Reference imagery only. Where a specific room, device or service has not been confirmed, we say so rather than implying it is on site."
+            label="Our facilities"
+            title="A look inside the centre."
+            description="From ward spaces to consultation rooms, see the environments where our team cares for patients."
           />
 
           <motion.div
@@ -71,10 +71,6 @@ function Gallery() {
             ))}
           </motion.div>
 
-          <p className="mt-12 max-w-[64ch] border-l border-tmc-gold/50 pl-5 text-xs leading-relaxed text-muted-foreground">
-            Images are illustrative clinical environments and equipment. They are not photographs of
-            Trinity Medical Centre premises, staff or patients.
-          </p>
         </div>
       </section>
     </div>

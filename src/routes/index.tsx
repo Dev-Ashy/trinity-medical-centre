@@ -302,8 +302,8 @@ function Home() {
             >
               <motion.figure variants={cascadeItem} className="overflow-hidden rounded-sm">
                 <img
-                  src={facilityImages[2].src}
-                  alt="Operating theatre"
+                  src={facilityImages[0].src}
+                  alt={facilityImages[0].alt}
                   className="h-[290px] w-full object-cover sm:h-[380px]"
                   loading="lazy"
                 />
@@ -313,10 +313,20 @@ function Home() {
                 className="mt-4 grid grid-cols-2 gap-4"
               >
                 <figure className="overflow-hidden rounded-sm">
-                  <img src={facilityImages[1].src} alt="Laboratory" className="h-40 w-full object-cover" loading="lazy" />
+                  <img
+                    src={facilityImages[2].src}
+                    alt={facilityImages[2].alt}
+                    className="h-40 w-full object-cover"
+                    loading="lazy"
+                  />
                 </figure>
                 <figure className="overflow-hidden rounded-sm">
-                  <img src={facilityImages[4].src} alt="Clinical corridor" className="h-40 w-full object-cover" loading="lazy" />
+                  <img
+                    src={facilityImages[3].src}
+                    alt={facilityImages[3].alt}
+                    className="h-40 w-full object-cover"
+                    loading="lazy"
+                  />
                 </figure>
               </motion.div>
               <motion.div
@@ -324,7 +334,7 @@ function Home() {
                 className="absolute -bottom-6 left-6 max-w-[260px] border border-tmc-gold/40 bg-paper px-5 py-4 shadow-[0_20px_45px_-30px_rgba(21,17,31,0.5)] sm:left-10"
               >
                 <p className="font-heading text-[1.05rem] leading-snug text-ink">
-                  Illustrative clinical environments — not photographs of TMC premises.
+                  A look inside Trinity Medical Centre.
                 </p>
               </motion.div>
             </motion.div>
@@ -337,8 +347,8 @@ function Home() {
         <div className="container-tmc">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <SectionHeading
-              title="Equipment and spaces we work to."
-              description="A closer look at the kind of clinical environments and equipment the centre is being built around."
+              title="Inside Trinity Medical Centre."
+              description="A closer look at the rooms and spaces where our team welcomes and cares for patients."
             />
             <Link
               to="/gallery"
