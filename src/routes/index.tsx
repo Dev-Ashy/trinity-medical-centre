@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarCheck, ArrowRight, ArrowUpRight, Pause, Play } from "lucide-react";
+import { CalendarCheck, ArrowRight, ArrowUpRight } from "lucide-react";
 import { services } from "@/data/site";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Reveal } from "@/components/site/reveal";
@@ -25,8 +25,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const defaultHero = facilityImages.map((image) => image.src);
-
 const headline = ["Care that is", "accessible, affordable", "and reliable."];
 
 const points = [
@@ -48,11 +46,13 @@ function Home() {
   const reduce = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const [galleryImgs, setGalleryImgs] = useState<any[]>(facilityImages.slice(0, 8));
-  const [heroImgs, setHeroImgs] = useState(defaultHero);
 
+  // Scroll-driven hero: cross-fade between images as user scrolls
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
   const heroFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.35]);
+  // Image index based on scroll progress (0 to 3)
+  const imageIndex = useTransform(scrollYProgress, [0, 1], [0, 3]);
 
   useEffect(() => {
     const items = getGalleryItems();
@@ -63,31 +63,44 @@ function Home() {
         ...facilityImages.slice(0, Math.max(0, 8 - homepage.length)),
       ]);
     }
-    const hero = items.filter((i) => i.section === "hero");
-    if (hero.length > 0) setHeroImgs([...hero.map((i) => i.src), ...defaultHero]);
   }, []);
+
+  // Pick 4 hero images from facilityImages
+  const heroImgs = facilityImages.slice(0, 4).map((img) => img.src);
 
   return (
     <div>
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative isolate min-h-[86vh] overflow-hidden bg-ink">
-        <input
-          id="home-hero-pause"
-          type="checkbox"
-          aria-label="Pause or resume homepage slideshow"
-          className="home-hero-toggle peer sr-only"
-        />
         <motion.div
-          className="home-hero-background absolute inset-0"
+          className="absolute inset-0"
           style={reduce ? undefined : { y: heroY, opacity: heroFade }}
         >
-          {heroImgs.slice(0, 4).map((src, i) => (
-            <img
-              key={`${src}-${i}`}
+          {/* Scroll-driven cross-fade images */}
+          {heroImgs.map((src, i) => (
+            <motion.img
+              key={src}
               src={src}
               alt=""
-              className="home-hero-slide absolute inset-0 h-full w-full object-cover opacity-0 animate-[slideshow_24s_infinite]"
-              style={{ animationDelay: `${i * 6}s` }}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{
+                opacity: reduce
+                  ? i === 0
+                    ? 1
+                    : 0
+                  : undefined,
+              }}
+              initial={reduce ? (i === 0 ? { opacity: 1 } : { opacity: 0 }) : { opacity: 0 }}
+              animate={reduce
+                ? undefined
+                : {
+                    opacity: imageIndex,
+                  }}
+              transition={{
+                type: "keyframes",
+                duration: 0.8,
+                ease: easeOut,
+              }}
             />
           ))}
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/35" />
@@ -169,14 +182,6 @@ function Home() {
             style={{ transformOrigin: "top" }}
           />
         </motion.div>
-
-        <label
-          htmlFor="home-hero-pause"
-          className="home-hero-toggle-label absolute bottom-5 right-5 z-20 inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-sm border border-white/40 bg-ink/75 text-white transition-colors hover:bg-ink sm:right-10"
-        >
-          <Pause className="home-hero-pause-icon size-4" aria-hidden="true" />
-          <Play className="home-hero-play-icon size-4" aria-hidden="true" />
-        </label>
       </section>
 
       {/* ── Service ticker ─────────────────────────────────────── */}
