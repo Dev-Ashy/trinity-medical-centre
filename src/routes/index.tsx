@@ -51,8 +51,15 @@ function Home() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
   const heroFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.35]);
-  // Image index based on scroll progress (0 to 3)
-  const imageIndex = useTransform(scrollYProgress, [0, 1], [0, 3]);
+
+  // Create individual opacity MotionValues for each of the 4 images
+  // Each image fades in over ~25% of scroll, with 12.5% overlap for cross-fade
+  const imageOpacities = [
+    useTransform(scrollYProgress, [0, 0.25, 0.375, 1], [1, 1, 0, 0]),      // Image 0: visible 0-25%, fade out 25-37.5%
+    useTransform(scrollYProgress, [0, 0.125, 0.375, 0.5, 1], [0, 1, 1, 0, 0]), // Image 1: fade in 0-12.5%, visible 12.5-50%, fade out 50-62.5%
+    useTransform(scrollYProgress, [0, 0.375, 0.5, 0.75, 1], [0, 0, 1, 1, 0]),  // Image 2: fade in 37.5-50%, visible 50-75%, fade out 75-87.5%
+    useTransform(scrollYProgress, [0, 0.625, 0.75, 1], [0, 0, 1, 1]),           // Image 3: fade in 62.5-75%, visible 75-100%
+  ];
 
   useEffect(() => {
     const items = getGalleryItems();
@@ -84,27 +91,15 @@ function Home() {
               alt=""
               className="absolute inset-0 h-full w-full object-cover"
               style={{
-                opacity: reduce
-                  ? i === 0
-                    ? 1
-                    : 0
-                  : undefined,
+                opacity: reduce ? (i === 0 ? 1 : 0) : imageOpacities[i],
               }}
               initial={reduce ? (i === 0 ? { opacity: 1 } : { opacity: 0 }) : { opacity: 0 }}
-              animate={reduce
-                ? undefined
-                : {
-                    opacity: imageIndex,
-                  }}
-              transition={{
-                type: "keyframes",
-                duration: 0.8,
-                ease: easeOut,
-              }}
+              animate={reduce ? undefined : { opacity: imageOpacities[i] }}
+              transition={{ duration: 0.6, ease: easeOut }}
             />
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/35" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-ink/40 to-ink/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
         </motion.div>
 
         <div className="container-tmc relative z-10 flex min-h-[86vh] flex-col justify-center py-24">
