@@ -39,20 +39,20 @@ export function SiteHeader() {
     <header
       className={`sticky top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
         scrolled
-          ? "border-white/15 bg-ink/92 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
-          : "border-white/10 bg-ink/80 backdrop-blur-md"
+          ? "border-white/15 bg-ink/95 shadow-[0_10px_40px_-30px_rgba(0,0,0,0.95)] backdrop-blur-xl"
+          : "border-white/10 bg-ink/90 backdrop-blur-lg"
       }`}
     >
       <div
         className={`container-tmc flex items-center justify-between gap-6 transition-[height] duration-300 ${
-          scrolled ? "h-[62px]" : "h-[78px]"
+          scrolled ? "h-[64px]" : "h-[82px]"
         }`}
       >
         <Link to="/" className="flex items-center gap-3 shrink-0" aria-label="Trinity Medical Centre home">
-          <img src="/images/tmc-mark.svg" alt="" className="h-9 w-9" />
+          <img src="/images/tmc-mark.svg" alt="" className="h-10 w-10" />
           <span className="flex flex-col leading-none">
-            <span className="font-heading text-[1.2rem] font-medium tracking-[-0.01em] text-white">Trinity</span>
-            <span className="label-caps mt-1 text-[9px] text-tmc-gold/90">Medical Centre</span>
+            <span className="font-heading text-[1.25rem] font-semibold tracking-[-0.01em] text-white">Trinity</span>
+            <span className="label-caps mt-1 text-[9px] tracking-[0.22em] text-tmc-gold/90">Medical Centre</span>
           </span>
         </Link>
 
