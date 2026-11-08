@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarCheck, ArrowRight, ArrowUpRight } from "lucide-react";
+import { CalendarCheck, ArrowRight, ArrowUpRight, Pause, Play } from "lucide-react";
 import { services } from "@/data/site";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Reveal } from "@/components/site/reveal";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { facilityImages, tmcPhotos } from "@/data/images";
 import { useEffect, useRef, useState } from "react";
 import { EmployeeOfMonthSection } from "@/components/admin/employee-of-month";
@@ -46,20 +46,40 @@ function Home() {
   const reduce = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const [galleryImgs, setGalleryImgs] = useState<any[]>(facilityImages.slice(0, 8));
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // Scroll-driven hero: cross-fade between images as user scrolls
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const heroFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.35]);
+  // Deterministic hero images (first 8 facility images) - no random for SSR hydration
+  const heroImgs = useRef(
+    facilityImages.slice(0, 8).map((img) => img.src)
+  ).current;
 
-  // Create individual opacity MotionValues for each of the 4 images
-  // Each image fades in over ~25% of scroll, with 12.5% overlap for cross-fade
-  const imageOpacities = [
-    useTransform(scrollYProgress, [0, 0.25, 0.375, 1], [1, 1, 0, 0]),      // Image 0: visible 0-25%, fade out 25-37.5%
-    useTransform(scrollYProgress, [0, 0.125, 0.375, 0.5, 1], [0, 1, 1, 0, 0]), // Image 1: fade in 0-12.5%, visible 12.5-50%, fade out 50-62.5%
-    useTransform(scrollYProgress, [0, 0.375, 0.5, 0.75, 1], [0, 0, 1, 1, 0]),  // Image 2: fade in 37.5-50%, visible 50-75%, fade out 75-87.5%
-    useTransform(scrollYProgress, [0, 0.625, 0.75, 1], [0, 0, 1, 1]),           // Image 3: fade in 62.5-75%, visible 75-100%
-  ];
+  // Auto-advance slideshow
+  useEffect(() => {
+    if (reduce || isPaused) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImgs.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [reduce, isPaused, heroImgs.length]);
+
+  // Keyboard navigation for slideshow
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        setCurrentSlide((prev) => (prev - 1 + heroImgs.length) % heroImgs.length);
+        setIsPaused(true);
+      } else if (e.key === "ArrowRight") {
+        setCurrentSlide((prev) => (prev + 1) % heroImgs.length);
+        setIsPaused(true);
+      } else if (e.key === " " || e.key === "Space") {
+        e.preventDefault();
+        setIsPaused((p) => !p);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [heroImgs.length]);
 
   useEffect(() => {
     const items = getGalleryItems();
@@ -72,37 +92,43 @@ function Home() {
     }
   }, []);
 
-  // Pick 4 hero images from tmcPhotos
-  const heroImgs = tmcPhotos.hero;
-
   return (
     <div>
-      {/* ── Hero ───────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative isolate min-h-[86vh] overflow-hidden bg-ink">
-        <motion.div
-          className="absolute inset-0"
-          style={reduce ? undefined : { y: heroY, opacity: heroFade }}
-        >
-          {/* Scroll-driven cross-fade images */}
+      {/* ── Hero with automatic slideshow ──────────────────────────── */}
+      <section
+        ref={heroRef}
+        className="relative isolate min-h-[90vh] overflow-hidden bg-ink"
+        aria-roledescription="slideshow"
+        aria-label="Trinity Medical Centre facility photos"
+      >
+        {/* Slideshow background */}
+        <div className="absolute inset-0" aria-hidden="true">
           {heroImgs.map((src, i) => (
             <motion.img
               key={src}
               src={src}
               alt=""
               className="absolute inset-0 h-full w-full object-cover"
-              style={{
-                opacity: reduce ? (i === 0 ? 1 : 0) : imageOpacities[i],
+              initial={false}
+              animate={{
+                opacity: i === currentSlide ? 1 : 0,
+                scale: i === currentSlide ? 1 : 1.02,
               }}
-              initial={reduce ? (i === 0 ? { opacity: 1 } : { opacity: 0 }) : { opacity: 0 }}
-              animate={reduce ? undefined : { opacity: imageOpacities[i] }}
-              transition={{ duration: 0.6, ease: easeOut }}
+              transition={{
+                duration: 1.2,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              style={{ willChange: "opacity, transform" }}
             />
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-ink/40 to-ink/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
-        </motion.div>
+          {/* Strong scrim for text readability - never raw text on image */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/95 via-ink/85 to-ink/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(201,162,39,0.08),transparent_60%)]" />
+        </div>
 
-        <div className="container-tmc relative z-10 flex min-h-[86vh] flex-col justify-center py-24">
+        {/* Content */}
+        <div className="container-tmc relative z-10 flex min-h-[90vh] flex-col justify-center py-24">
           <motion.p
             className="label-caps text-tmc-gold"
             initial={reduce ? undefined : { opacity: 0, y: 14 }}
@@ -112,14 +138,14 @@ function Home() {
             Trinity Medical Centre
           </motion.p>
 
-          <h1 className="mt-6 max-w-[15ch] text-[2.65rem] leading-[1.04] text-white sm:text-[3.6rem] lg:text-[4.4rem]">
+          <h1 className="mt-6 max-w-[16ch] text-[2.8rem] leading-[1.02] text-white sm:text-[4rem] lg:text-[5rem]">
             {headline.map((line, li) => (
               <span key={line} className="block overflow-hidden">
                 <motion.span
                   className="block"
                   initial={reduce ? undefined : { y: "110%" }}
                   animate={{ y: "0%" }}
-                  transition={{ duration: 0.85, ease: easeOut, delay: reduce ? 0 : 0.1 + li * 0.11 }}
+                  transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: reduce ? 0 : 0.1 + li * 0.12 }}
                 >
                   {line}
                 </motion.span>
@@ -128,10 +154,10 @@ function Home() {
           </h1>
 
           <motion.p
-            className="mt-7 max-w-[46ch] text-[1.02rem] leading-relaxed text-white/70"
+            className="mt-7 max-w-[52ch] text-[1.05rem] leading-relaxed text-white/85"
             initial={reduce ? undefined : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easeOut, delay: reduce ? 0 : 0.5 }}
+            transition={{ duration: 0.6, ease: easeOut, delay: reduce ? 0 : 0.55 }}
           >
             Outpatient care, diagnostics, eye care, women's health and paediatrics — delivered with
             attention, in plain language.
@@ -141,12 +167,12 @@ function Home() {
             className="mt-10 flex flex-wrap items-center gap-3"
             initial={reduce ? undefined : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easeOut, delay: reduce ? 0 : 0.62 }}
+            transition={{ duration: 0.6, ease: easeOut, delay: reduce ? 0 : 0.68 }}
           >
-            <motion.div whileHover={reduce ? undefined : { scale: 1.03 }} whileTap={reduce ? undefined : { scale: 0.98 }}>
+            <motion.div whileHover={reduce ? undefined : { scale: 1.02 }} whileTap={reduce ? undefined : { scale: 0.98 }}>
               <Link
                 to="/book-appointment"
-                className="inline-flex items-center gap-2 rounded-sm bg-tmc-red px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_40px_-20px_rgba(179,22,58,1)]"
+                className="inline-flex items-center gap-2 rounded-sm bg-tmc-red px-7 py-3.5 text-sm font-semibold text-white shadow-[0_16px_40px_-20px_rgba(179,22,58,1)]"
               >
                 <CalendarCheck className="size-4" aria-hidden="true" />
                 Book an appointment
@@ -154,7 +180,7 @@ function Home() {
             </motion.div>
             <Link
               to="/services"
-              className="group inline-flex items-center gap-2 rounded-sm border border-white/30 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:border-tmc-gold hover:text-tmc-gold"
+              className="group inline-flex items-center gap-2 rounded-sm border border-white/30 px-7 py-3.5 text-sm font-medium text-white transition-colors hover:border-tmc-gold hover:text-tmc-gold"
             >
               Explore our services
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
@@ -162,12 +188,45 @@ function Home() {
           </motion.div>
         </div>
 
+        {/* Slideshow controls */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 md:flex-row md:gap-6">
+          {/* Slide indicators */}
+          <div className="flex items-center gap-2" role="tablist" aria-label="Slide navigation">
+            {heroImgs.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={i === currentSlide}
+                aria-label={`Go to slide ${i + 1}`}
+                onClick={() => { setCurrentSlide(i); setIsPaused(true); }}
+                className={`relative h-2 w-px rounded-full transition-all duration-500 ${
+                  i === currentSlide
+                    ? "bg-tmc-gold w-8"
+                    : "bg-white/30 hover:bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Pause/Play toggle */}
+          <button
+            type="button"
+            onClick={() => setIsPaused((p) => !p)}
+            aria-label={isPaused ? "Resume slideshow" : "Pause slideshow"}
+            aria-pressed={isPaused}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-white/30 bg-ink/80 text-white backdrop-blur-sm transition-colors hover:bg-ink hover:border-tmc-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tmc-gold"
+          >
+            {isPaused ? <Play className="size-5" aria-hidden="true" /> : <Pause className="size-5" aria-hidden="true" />}
+          </button>
+        </div>
+
+        {/* Scroll indicator */}
         <motion.div
           aria-hidden="true"
           className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
           initial={reduce ? undefined : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
         >
           <span className="label-caps text-[9px] text-white/40">Scroll</span>
           <motion.span
@@ -214,7 +273,7 @@ function Home() {
               transition={{ duration: 0.6, ease: easeOut, delay: reduce ? 0 : 0.1 }}
             >
               <p className="font-heading text-[1.35rem] leading-snug text-ink/85">
-                “Accessible, affordable and reliable” is not a slogan we print and forget. It is the
+                "Accessible, affordable and reliable" is not a slogan we print and forget. It is the
                 standard every consultation is measured against.
               </p>
               <Link
@@ -359,7 +418,7 @@ function Home() {
         </div>
       </section>
 
-      {/* ── Facility grid ──────────────────────────────────────── */}
+      {/* ── Facility grid — all 30 unique images ─────────────────── */}
       <section className="bg-mist py-20 sm:py-24">
         <div className="container-tmc">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -377,27 +436,28 @@ function Home() {
           </div>
 
           <motion.div
-            className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             variants={staggerParent}
             initial={reduce ? undefined : "hidden"}
             whileInView="show"
             viewport={viewportOnce}
           >
-            {galleryImgs.map((img: any, i) => (
-              <motion.figure key={`${img.src}-${i}`} variants={cascadeItem} className="group">
-                <div className="overflow-hidden rounded-sm bg-ink/5">
+            {/* Use ALL 30 facility images, no repetition */}
+            {facilityImages.map((img, i) => (
+              <motion.figure key={img.src} variants={cascadeItem} className="group">
+                <div className="overflow-hidden rounded-sm bg-ink/5 aspect-[4/3]">
                   <img
                     src={img.src}
-                    alt={img.alt || img.caption}
+                    alt={img.alt}
                     width={1200}
-                    height={800}
+                    height={900}
                     loading="lazy"
-                    className="h-48 w-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.045]"
+                    className="h-full w-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]"
                   />
                 </div>
                 <figcaption className="mt-3 flex items-center gap-2 text-[0.72rem] text-ink/55">
                   <span className="h-px w-4 bg-tmc-gold" aria-hidden="true" />
-                  {img.caption || img.alt}
+                  {img.caption}
                 </figcaption>
               </motion.figure>
             ))}
