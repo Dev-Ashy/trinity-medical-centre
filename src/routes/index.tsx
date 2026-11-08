@@ -4,7 +4,7 @@ import { services } from "@/data/site";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Reveal } from "@/components/site/reveal";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { facilityImages } from "@/data/images";
+import { facilityImages, tmcPhotos } from "@/data/images";
 import { useEffect, useRef, useState } from "react";
 import { EmployeeOfMonthSection } from "@/components/admin/employee-of-month";
 import { LeadershipProfile } from "@/components/admin/leadership-profile";
@@ -72,8 +72,8 @@ function Home() {
     }
   }, []);
 
-  // Pick 4 hero images from facilityImages
-  const heroImgs = facilityImages.slice(0, 4).map((img) => img.src);
+  // Pick 4 hero images from tmcPhotos
+  const heroImgs = tmcPhotos.hero;
 
   return (
     <div>
