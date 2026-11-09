@@ -418,8 +418,8 @@ function Home() {
         </div>
       </section>
 
-      {/* ── Facility grid — all 30 unique images ─────────────────── */}
-      <section className="bg-mist py-20 sm:py-24">
+      {/* ── Facility grid — curated preview ─────────────────────────── */}
+      <section className="bg-mist py-20 sm:py-28">
         <div className="container-tmc">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <SectionHeading
@@ -430,36 +430,53 @@ function Home() {
               to="/gallery"
               className="group inline-flex shrink-0 items-center gap-2 text-sm font-medium text-ink/70 transition-colors hover:text-ink"
             >
-              Full gallery
+              View full gallery
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
 
           <motion.div
-            className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
             variants={staggerParent}
             initial={reduce ? undefined : "hidden"}
             whileInView="show"
             viewport={viewportOnce}
           >
-            {/* Use ALL 30 facility images, no repetition */}
-            {facilityImages.map((img, i) => (
-              <motion.figure key={img.src} variants={cascadeItem} className="group">
-                <div className="overflow-hidden rounded-sm bg-ink/5 aspect-[4/3]">
-                  <img
-                    src={img.src}
-                    alt={img.alt}
-                    width={1200}
-                    height={900}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]"
-                  />
+            {/* Show 8 curated images on homepage */}
+            {facilityImages.slice(0, 8).map((img, i) => (
+              <motion.article
+                key={img.src}
+                variants={cascadeItem}
+                className="group"
+                initial={reduce ? undefined : "hidden"}
+                whileInView="show"
+                viewport={viewportOnce}
+              >
+                <div className="relative overflow-hidden rounded-xl bg-ink/5 aspect-[4/3]">
+                  <picture>
+                    <source srcSet={img.srcWebp} type="image/webp" />
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      width={img.width}
+                      height={img.height}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.06]"
+                    />
+                  </picture>
+                  <div className="absolute top-3 left-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[0.68rem] font-semibold text-ink/80 shadow-sm">
+                      {img.category}
+                    </span>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
                 </div>
-                <figcaption className="mt-3 flex items-center gap-2 text-[0.72rem] text-ink/55">
-                  <span className="h-px w-4 bg-tmc-gold" aria-hidden="true" />
-                  {img.caption}
+                <figcaption className="mt-4 text-center">
+                  <h3 className="font-heading text-[1.05rem] font-medium text-ink group-hover:text-tmc-gold transition-colors duration-200">
+                    {img.caption}
+                  </h3>
                 </figcaption>
-              </motion.figure>
+              </motion.article>
             ))}
           </motion.div>
         </div>
